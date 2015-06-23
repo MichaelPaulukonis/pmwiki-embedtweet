@@ -90,10 +90,13 @@ SDV($ETweet_Widget_Script,'<script src="http://platform.twitter.com/widgets.js" 
 
 $HTMLFooterFmt[] = $ETweet_Widget_Script;
 
-#original
-Markup_e('EmbedTweet','<inline','/\\[tweet\s*(.*?)\\]/i',"ETw_HandleTweet(\$m[1])");
+Markup_e('EmbedTweet_oldstyle','<inline','/\\[tweet\s*(.*?)\\]/i',"ETw_HandleTweet(\$m[1])");
 
-#Markup_e('EmbedTweet','<inline','/\\[tweet\s*(.*?)\\]/i',"ETw_HandleTweet(\$m[1])");
+Markup_e('EmbedTweet','<inline','/\\(:tweet\s*(.*?):\\)/i',"ETw_HandleTweet(\$m[1])");
+
+## TODO: recognize solo-ID and/or presence of http(s):// protocol from what's present
+## ie, don't require explicit parameters
+
 /**
  * Handle the embedding of the tweet
  *
