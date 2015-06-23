@@ -20,7 +20,7 @@
  * \since     2012-07-04
  * \copyright 2012 by Tamara Temple
  * \license   GPLv3
- * \version   0.1
+ * \version   0.2 - Michael Paulukonis 2015.06
  *
  * INSTALLATION
  * ============
@@ -79,7 +79,7 @@
  */
 
 // Version of this recipe
-$RecipeInfo['EmbedTweet']['Version'] = '2012-07-04'; 
+$RecipeInfo['EmbedTweet']['Version'] = '2015-06-23'; 
 
 // Add a custom page storage location and some bundled wikipages.
 //@include("EmbedTweet/bundlepages.php");
@@ -90,7 +90,10 @@ SDV($ETweet_Widget_Script,'<script src="http://platform.twitter.com/widgets.js" 
 
 $HTMLFooterFmt[] = $ETweet_Widget_Script;
 
-Markup('EmbedTweet','<inline','/\\[tweet\s*(.*?)\\]/ei',"ETw_HandleTweet('$1')");
+#original
+Markup_e('EmbedTweet','<inline','/\\[tweet\s*(.*?)\\]/i',"ETw_HandleTweet(\$m[1])");
+
+#Markup_e('EmbedTweet','<inline','/\\[tweet\s*(.*?)\\]/i',"ETw_HandleTweet(\$m[1])");
 /**
  * Handle the embedding of the tweet
  *
@@ -128,6 +131,10 @@ function ETw_FetchTweet ($args)
 			  CURLOPT_TIMEOUT=>30,
 			  CURLOPT_USERAGENT=>"Mozilla/5.0",
 			  CURLOPT_REFERER=>$ScriptUrl,
+              # curl errorError code: SSL certificate problem: unable to get local issuer certificate 
+              # may not be required for all servers, make conditional?
+              # http://unitstep.net/blog/2009/05/05/using-curl-in-php-to-access-https-ssltls-protected-sites/
+              CURLOPT_SSL_VERIFYPEER=>false
 			  ));
   $response = curl_exec($ch);
   if (false === $response) {
